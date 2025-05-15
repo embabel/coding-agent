@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.embabel.coding
+package com.embabel.coding.domain
 
 import com.embabel.agent.toolgroups.code.BuildOptions
 import com.embabel.agent.toolgroups.code.BuildResult

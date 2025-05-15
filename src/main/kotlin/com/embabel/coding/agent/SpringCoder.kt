@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.embabel.coding
+package com.embabel.coding.agent
 
 import com.embabel.agent.api.annotation.AchievesGoal
 import com.embabel.agent.api.annotation.Action
@@ -21,10 +21,11 @@ import com.embabel.agent.api.annotation.AgentCapabilities
 import com.embabel.agent.api.annotation.fromForm
 import com.embabel.agent.api.common.ActionContext
 import com.embabel.agent.toolgroups.file.FileWriteTools
-import com.embabel.coding.agent.CodeExplanation
-import com.embabel.coding.agent.CoderConditions
+import com.embabel.coding.domain.SoftwareProject
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
+import org.springframework.web.client.RestClient
+import java.io.File
 
 data class SpringRecipe(
     val projectName: String = "demo",
@@ -66,12 +67,12 @@ class SpringCoder {
         val tempDir = FileWriteTools.createTempDir("spring-initializr")
 
         // Create RestClient to call Spring Initialzr
-        val restClient = org.springframework.web.client.RestClient.builder()
+        val restClient = RestClient.builder()
             .baseUrl("https://start.spring.io")
             .build()
 
         // Make the request to Spring Initialzr and save the response to a zip file
-        val zipFile = java.io.File("$tempDir/${springRecipe.artifactId}.zip")
+        val zipFile = File("$tempDir/${springRecipe.artifactId}.zip")
         val response = restClient.get()
             .uri { uriBuilder ->
                 uriBuilder.path("/starter.zip")

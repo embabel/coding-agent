@@ -22,6 +22,7 @@ import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.toolgroups.file.FileWriteTools
 import com.embabel.coding.agent.CodeExplanation
 import com.embabel.coding.agent.CoderConditions
+import com.embabel.coding.domain.SoftwareProject
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import java.io.File
