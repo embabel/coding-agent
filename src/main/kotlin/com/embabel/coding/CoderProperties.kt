@@ -14,36 +14,3 @@
  * limitations under the License.
  */
 package com.embabel.coding
-
-import com.embabel.agent.config.models.AnthropicModels
-import com.embabel.common.ai.model.LlmOptions
-import com.embabel.common.ai.model.ModelSelectionCriteria.Companion.byName
-import com.embabel.common.util.loggerFor
-import org.springframework.boot.context.properties.ConfigurationProperties
-
-/**
- * Common configuration and utilities
- */
-@ConfigurationProperties(prefix = "embabel.coding")
-class CoderProperties(
-    val primaryCodingModel: String = AnthropicModels.CLAUDE_37_SONNET,//OllamaModels.QWEN2_5_CODER,
-    val fixCodingModel: String = AnthropicModels.CLAUDE_37_SONNET,
-    // TODO shouldn't be hardcoded
-    val defaultLocation: String = System.getProperty("user.dir") + "/embabel-agent-api",
-) {
-
-    init {
-        loggerFor<CoderProperties>().info("Coding properties: {}", this)
-    }
-
-    /**
-     * Primary coding Llm
-     */
-    val primaryCodingLlm = LlmOptions(
-        criteria = byName(primaryCodingModel),
-    )
-
-    val fixCodingLlm = LlmOptions(
-        criteria = byName(fixCodingModel),
-    )
-}

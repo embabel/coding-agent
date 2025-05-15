@@ -21,6 +21,11 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(
+    scanBasePackages = [
+        "com.embabel.agent",
+        "com.embabel.agent.shell",
+    ]
+)
 @ConfigurationPropertiesScan
 class CodingAgentApplication {
 

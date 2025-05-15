@@ -21,6 +21,8 @@ import com.embabel.agent.api.annotation.AgentCapabilities
 import com.embabel.agent.api.annotation.fromForm
 import com.embabel.agent.api.common.ActionContext
 import com.embabel.agent.toolgroups.file.FileWriteTools
+import com.embabel.coding.agent.CodeExplanation
+import com.embabel.coding.agent.CoderConditions
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 

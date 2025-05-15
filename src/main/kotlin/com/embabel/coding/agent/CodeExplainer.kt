@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.embabel.coding
+package com.embabel.coding.agent
 
 import com.embabel.agent.api.annotation.AchievesGoal
 import com.embabel.agent.api.annotation.Action
@@ -25,6 +25,7 @@ import com.embabel.agent.domain.library.HasContent
 import com.embabel.agent.domain.library.InternetResource
 import com.embabel.agent.domain.library.InternetResources
 import com.embabel.agent.domain.io.UserInput
+import com.embabel.coding.SoftwareProject
 import org.springframework.context.annotation.Profile
 
 data class CodeExplanation(

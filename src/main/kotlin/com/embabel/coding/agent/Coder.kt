@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.embabel.coding
+package com.embabel.coding.agent
 
 import com.embabel.agent.api.annotation.*
 import com.embabel.agent.api.common.ActionContext
@@ -23,6 +23,8 @@ import com.embabel.agent.core.ToolGroup
 import com.embabel.agent.domain.library.HasContent
 import com.embabel.agent.domain.io.UserInput
 import com.embabel.agent.toolgroups.code.BuildResult
+import com.embabel.coding.ProjectRepository
+import com.embabel.coding.SoftwareProject
 import com.embabel.common.util.time
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
 import org.slf4j.LoggerFactory

@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.embabel.coding.agent
+package com.embabel.coding
 
 import com.embabel.agent.api.annotation.AchievesGoal
 import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.AgentCapabilities
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.toolgroups.file.FileWriteTools
-import com.embabel.examples.dogfood.coding.CodeExplanation
-import com.embabel.examples.dogfood.coding.CoderConditions
-import com.embabel.examples.dogfood.coding.SoftwareProject
+import com.embabel.coding.agent.CodeExplanation
+import com.embabel.coding.agent.CoderConditions
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import java.io.File

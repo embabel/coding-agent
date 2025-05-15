@@ -18,6 +18,7 @@ package com.embabel.coding
 import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.using
 import com.embabel.agent.api.common.create
+import com.embabel.coding.agent.CoderProperties
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 
