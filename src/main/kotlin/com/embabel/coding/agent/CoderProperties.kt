@@ -29,7 +29,7 @@ data class CoderProperties(
     val primaryCodingModel: String = AnthropicModels.Companion.CLAUDE_37_SONNET,//OllamaModels.QWEN2_5_CODER,
     val fixCodingModel: String = AnthropicModels.Companion.CLAUDE_37_SONNET,
     // TODO shouldn't be hardcoded
-    val defaultLocation: String = System.getProperty("user.dir") + "/embabel-agent-api",
+    val defaultLocation: String = System.getProperty("user.dir") ,
 ) {
 
     init {
