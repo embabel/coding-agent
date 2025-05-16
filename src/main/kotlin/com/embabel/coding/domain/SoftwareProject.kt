@@ -15,13 +15,13 @@
  */
 package com.embabel.coding.domain
 
-import com.embabel.agent.toolgroups.code.BuildOptions
-import com.embabel.agent.toolgroups.code.BuildResult
-import com.embabel.agent.toolgroups.code.Ci
-import com.embabel.agent.toolgroups.code.SymbolSearch
 import com.embabel.agent.toolgroups.file.FileContentTransformer
 import com.embabel.agent.toolgroups.file.FileTools
 import com.embabel.agent.toolgroups.file.WellKnownFileContentTransformers
+import com.embabel.coding.tools.BuildOptions
+import com.embabel.coding.tools.BuildResult
+import com.embabel.coding.tools.Ci
+import com.embabel.coding.tools.SymbolSearch
 import com.embabel.common.ai.prompt.PromptContributor
 import com.embabel.common.util.loggerFor
 import com.fasterxml.jackson.annotation.JsonClassDescription
