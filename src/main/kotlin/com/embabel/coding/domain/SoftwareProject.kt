@@ -29,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.ai.tool.annotation.ToolParam
 import org.springframework.data.repository.CrudRepository
+import java.io.File
+import java.nio.file.Files
 import kotlin.collections.isNotEmpty
 import kotlin.collections.joinToString
 
@@ -48,6 +50,13 @@ open class SoftwareProject(
     @get:JsonPropertyDescription("Build command, such as 'mvn clean test'")
     val buildCommand: String,
 ) : PromptContributor, FileTools, SymbolSearch /*CiTools*/ {
+
+    init {
+        if (!exists()) {
+            error("Directory does not exist")
+        }
+        loggerFor<SoftwareProject>().info("Software project tools: ${toolCallbacks.map { it.toolDefinition.name()}.sorted()}")
+    }
 
     val codingStyle: String
         get() {

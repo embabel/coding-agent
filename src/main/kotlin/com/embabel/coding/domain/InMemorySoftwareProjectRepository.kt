@@ -31,8 +31,8 @@ class InMemorySoftwareProjectRepository : SoftwareProjectRepository,
 }
 
 val EmbabelAgentApi = SoftwareProject(
-    root = System.getProperty("user.dir") + "../embabel-agent/embabel-agent/api",
-    url = "https://github.com/embabel/embabel-agent-api",
+    root = java.io.File(System.getProperty("user.dir")).parentFile.resolve("embabel-agent/embabel-agent-api").absolutePath,
+    url = "https://github.com/embabel/embabel-agent",
     buildCommand = "mvn test",
     tech = """
         |Kotlin, Spring Boot, Maven, Jacoco, Spring AI

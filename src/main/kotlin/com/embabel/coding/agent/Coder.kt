@@ -30,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import java.time.Duration
-import kotlin.jvm.optionals.getOrNull
 
 data class CodeModificationRequest(
     @get:JsonPropertyDescription("Request to modify code")
@@ -217,7 +216,7 @@ class Coder(
             IF BUILDING IS NEEDED, BE SURE TO RUN UNIT TESTS.
             DO NOT BUILD *AFTER* MODIFYING CODE.
 
-            Make multiple small, focused edits if you can.
+            Make multiple small, focused edits using the editFile tool.
 
             User request:
             "${codeModificationRequest.request}"
