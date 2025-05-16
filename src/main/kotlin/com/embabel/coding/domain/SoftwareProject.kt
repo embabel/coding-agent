@@ -15,9 +15,9 @@
  */
 package com.embabel.coding.domain
 
-import com.embabel.agent.toolgroups.file.FileContentTransformer
-import com.embabel.agent.toolgroups.file.FileTools
-import com.embabel.agent.toolgroups.file.WellKnownFileContentTransformers
+import com.embabel.agent.tools.file.FileContentTransformer
+import com.embabel.agent.tools.file.FileTools
+import com.embabel.agent.tools.file.WellKnownFileContentTransformers
 import com.embabel.coding.tools.BuildOptions
 import com.embabel.coding.tools.BuildResult
 import com.embabel.coding.tools.Ci
@@ -29,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.ai.tool.annotation.ToolParam
 import org.springframework.data.repository.CrudRepository
+import kotlin.collections.isNotEmpty
+import kotlin.collections.joinToString
 
 /**
  * Open to allow extension

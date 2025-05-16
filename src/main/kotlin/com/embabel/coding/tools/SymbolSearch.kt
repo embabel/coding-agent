@@ -15,8 +15,8 @@
  */
 package com.embabel.coding.tools
 
-import com.embabel.agent.toolgroups.file.PatternSearch
-import com.embabel.agent.toolgroups.file.PatternSearch.PatternMatch
+import com.embabel.agent.tools.file.PatternSearch
+import com.embabel.agent.tools.file.PatternSearch.PatternMatch
 
 
 /**

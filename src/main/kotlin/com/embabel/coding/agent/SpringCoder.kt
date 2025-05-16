@@ -20,7 +20,7 @@ import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.AgentCapabilities
 import com.embabel.agent.api.annotation.fromForm
 import com.embabel.agent.api.common.ActionContext
-import com.embabel.agent.toolgroups.file.FileWriteTools
+import com.embabel.agent.tools.file.FileWriteTools
 import com.embabel.coding.domain.SoftwareProject
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
