@@ -67,40 +67,4 @@ interface CiTools : SelfToolCallbackPublisher, DirectoryBased {
         return Ci(root).build(BuildOptions(command, true))
     }
 
-    companion object {
-        /**
-         * Creates a new CiTools implementation as a ToolGroup.
-         *
-         * This factory method creates an anonymous implementation of the CiTools interface
-         * that also implements SelfToolGroup. The implementation provides the necessary
-         * configuration for the tool group, including:
-         * - The root directory where build commands will be executed
-         * - The artifact identifier for the tool group
-         * - A description of the tool group's purpose
-         * - The required permissions for the tool group to function
-         *
-         * The created tool group requires HOST_ACCESS permission to execute commands
-         * on the host machine.
-         *
-         * @param root The root directory path where the project is located and where
-         *             build commands will be executed
-         * @return A fully configured ToolGroup implementation of CiTools ready for use
-         *         in the agent system
-         * @see ToolGroup
-         * @see SelfToolGroup
-         * @see ToolGroupPermission.HOST_ACCESS
-         */
-        fun toolGroup(root: String): ToolGroup = object : CiTools, SelfToolGroup {
-            override val root: String = root
-            override val provider: String = "embabel"
-            override val name: String = "pluggable-ci"
-            override val version = Semver(0, 1, 0)
-
-            override val description
-                get() = ToolGroup.CI_DESCRIPTION
-
-            override val permissions get() = setOf(ToolGroupPermission.HOST_ACCESS)
-
-        }
-    }
 }

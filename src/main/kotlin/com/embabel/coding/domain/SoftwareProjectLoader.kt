@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Profile
 //)
 @Profile("!test")
 class SoftwareProjectLoader(
-    private val projectRepository: ProjectRepository,
+    private val softwareProjectRepository: SoftwareProjectRepository,
     private val coderProperties: CoderProperties,
 ) {
 
@@ -36,11 +36,12 @@ class SoftwareProjectLoader(
 
     @Action
     fun loadExistingProject(): SoftwareProject? {
-        val found = projectRepository.findById(coderProperties.defaultLocation)
-        if (found.isPresent) {
-            logger.info("Found existing project at ${coderProperties.defaultLocation}")
-        }
-        return found.orElse(null)
+//        val found = softwareProjectRepository.findById(coderProperties.defaultLocation)
+//        if (found.isPresent) {
+//            logger.info("Found existing project at ${coderProperties.defaultLocation}")
+//        }
+//        return found.orElse(null)
+        TODO()
     }
 
     /**
@@ -51,12 +52,12 @@ class SoftwareProjectLoader(
     fun analyzeProject(): SoftwareProject =
         using(coderProperties.primaryCodingLlm).create<SoftwareProject>(
             """
-                Analyze the project at ${coderProperties.defaultLocation}
+                Analyze the project at ${TODO()}
                 Use the file tools to read code and directories before analyzing it
             """.trimIndent(),
         ).also { project ->
             // So we don't need to do this again
-            projectRepository.save(project)
+            softwareProjectRepository.save(project)
         }
 
 }

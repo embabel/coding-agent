@@ -19,7 +19,7 @@ import com.embabel.examples.common.InMemoryCrudRepository
 import org.springframework.stereotype.Service
 
 @Service
-class InMemoryMovieProjectRepository : ProjectRepository,
+class InMemorySoftwareProjectRepository : SoftwareProjectRepository,
     InMemoryCrudRepository<SoftwareProject>(
         idGetter = { it.root },
         idSetter = { _, _ -> TODO("shouldn't be called") },
@@ -31,8 +31,8 @@ class InMemoryMovieProjectRepository : ProjectRepository,
 }
 
 val EmbabelAgentApi = SoftwareProject(
-    root = System.getProperty("user.dir"),
-    url = "https://github.com/embabel/embabel-coding-agent",
+    root = System.getProperty("user.dir") + "../embabel-agent/embabel-agent/api",
+    url = "https://github.com/embabel/embabel-agent-api",
     buildCommand = "mvn test",
     tech = """
         |Kotlin, Spring Boot, Maven, Jacoco, Spring AI

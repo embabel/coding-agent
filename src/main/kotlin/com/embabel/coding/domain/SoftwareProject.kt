@@ -117,4 +117,4 @@ open class SoftwareProject(
 
 }
 
-interface ProjectRepository : CrudRepository<SoftwareProject, String>
+interface SoftwareProjectRepository : CrudRepository<SoftwareProject, String>

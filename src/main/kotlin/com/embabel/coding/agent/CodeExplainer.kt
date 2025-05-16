@@ -20,6 +20,7 @@ import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.Agent
 import com.embabel.agent.api.annotation.using
 import com.embabel.agent.api.common.create
+import com.embabel.agent.core.CoreToolGroups
 import com.embabel.agent.core.ToolGroup
 import com.embabel.agent.domain.library.HasContent
 import com.embabel.agent.domain.library.InternetResource
@@ -43,7 +44,7 @@ class CodeExplainer(
     private val coderProperties: CoderProperties,
 ) {
 
-    @Action(toolGroups = [ToolGroup.WEB])
+    @Action
     @AchievesGoal(description = "Code has been explained to the user")
     fun explainCode(
         userInput: UserInput,

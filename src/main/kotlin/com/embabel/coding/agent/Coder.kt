@@ -19,11 +19,11 @@ import com.embabel.agent.api.annotation.*
 import com.embabel.agent.api.common.ActionContext
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
-import com.embabel.agent.core.ToolGroup
+import com.embabel.agent.core.CoreToolGroups
 import com.embabel.agent.domain.library.HasContent
 import com.embabel.agent.domain.io.UserInput
-import com.embabel.coding.domain.ProjectRepository
 import com.embabel.coding.domain.SoftwareProject
+import com.embabel.coding.domain.SoftwareProjectRepository
 import com.embabel.coding.tools.BuildResult
 import com.embabel.common.util.time
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
@@ -73,7 +73,7 @@ object CoderConditions {
 )
 @Profile("!test")
 class Coder(
-    private val projectRepository: ProjectRepository,
+    private val softwareProjectRepository: SoftwareProjectRepository,
     private val coderProperties: CoderProperties,
 ) {
 
@@ -85,14 +85,15 @@ class Coder(
      */
     @Action
     fun loadExistingProject(): SoftwareProject? =
-        projectRepository.findById(coderProperties.defaultLocation).getOrNull()
+        // TODO need to select
+        softwareProjectRepository.findAll().firstOrNull()
 
 
     /**
      * Converts raw user input into a structured code modification request
      * Uses GitHub tools to search for issues if the user references them
      */
-    @Action(toolGroups = [ToolGroup.GITHUB])
+    @Action(toolGroups = [CoreToolGroups.GITHUB])
     fun codeModificationRequestFromUserInput(
         project: SoftwareProject,
         userInput: UserInput
@@ -186,7 +187,7 @@ class Coder(
         post = [CoderConditions.BUILD_NEEDED],
         toolGroups = [
 //            ToolGroup.GITHUB,
-            ToolGroup.WEB
+            CoreToolGroups.WEB
         ]
     )
     fun modifyCode(
@@ -235,7 +236,7 @@ class Coder(
         canRerun = true,
         pre = [CoderConditions.BUILD_FAILED, CoderConditions.BUILD_WAS_LAST_ACTION],
         post = [CoderConditions.BUILD_SUCCEEDED],
-        toolGroups = [ToolGroup.WEB],
+        toolGroups = [CoreToolGroups.WEB],
     )
     fun fixBrokenBuild(
         codeModificationRequest: CodeModificationRequest,
