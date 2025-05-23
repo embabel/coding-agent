@@ -30,9 +30,12 @@ import com.embabel.coding.domain.SoftwareProject
 import org.springframework.context.annotation.Profile
 
 data class CodeExplanation(
-    override val text: String,
+    val text: String,
     override val links: List<InternetResource>,
-) : HasContent, InternetResources
+) : HasContent, InternetResources {
+    override val content: String
+        get() = TODO("Not yet implemented")
+}
 
 
 @Agent(

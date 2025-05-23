@@ -39,8 +39,11 @@ data class CodeModificationRequest(
 
 data class CodeModificationReport(
     @get:JsonPropertyDescription("Report of the modifications made to code")
-    override val text: String,
-) : HasContent
+    val text: String,
+) : HasContent {
+    override val content: String
+        get() = TODO("Not yet implemented")
+}
 
 object CoderConditions {
     const val BUILD_NEEDED = "buildNeeded"
