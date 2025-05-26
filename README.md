@@ -24,4 +24,29 @@
 &nbsp;&nbsp;&nbsp;&nbsp;
 
 # Embabel Coding Agent
-Embabel Agentic Flow for Software Engineers
+
+Headless coding agent built on Embabel agent platform, for use in developing Embabel and
+as an open source project in its own right.
+
+## Aims
+
+This project aims to provide a full-fledged coding agent that means the
+Embabel team's work is accelerated by AI, yet without the use of any commercial
+coding agents.
+
+Key capabilities include:
+
+- Provide the ability to explain and improve code
+- Combine access to project code with internet access: for example, to research new APIs.
+
+> This project is in an early stage of development.
+
+## Futures
+
+- Support for build systems other than Maven
+- Enhanced language support. See `SymbolSearch`
+- Further effort to reduce token usage
+- Integration with Spring repository to allow choice of project to work on
+- Deep integration with GitHub to allow presentation of changes via PR
+- Automated review of PRs
+- (possible) chat mode to allow interaction with agent during a process flow
