@@ -62,6 +62,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.embabel.agent.example</groupId>
+            <artifactId>examples-common</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.embabel.common</groupId>
             <artifactId>embabel-common-core</artifactId>
         </dependency>
