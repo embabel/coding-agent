@@ -15,12 +15,8 @@
  */
 package com.embabel.coding.tools
 
-import com.embabel.agent.api.common.SelfToolCallbackPublisher
-import com.embabel.agent.api.common.SelfToolGroup
-import com.embabel.agent.core.ToolGroup
-import com.embabel.agent.core.ToolGroupPermission
+import com.embabel.agent.api.common.support.SelfToolCallbackPublisher
 import com.embabel.agent.tools.DirectoryBased
-import com.embabel.common.core.types.Semver
 import org.springframework.ai.tool.annotation.Tool
 
 /**
