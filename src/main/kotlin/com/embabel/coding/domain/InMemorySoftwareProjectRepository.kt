@@ -15,7 +15,7 @@
  */
 package com.embabel.coding.domain
 
-import com.embabel.examples.common.InMemoryCrudRepository
+import com.embabel.example.common.InMemoryCrudRepository
 import org.springframework.stereotype.Service
 
 @Service

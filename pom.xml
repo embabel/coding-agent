@@ -17,6 +17,8 @@
     <properties>
         <embabel-common.version>1.0.0-SNAPSHOT</embabel-common.version>
         <embabel-agent-api.version>1.0.0-SNAPSHOT</embabel-agent-api.version>
+        <examples-common.version>1.0.0-SNAPSHOT</examples-common.version>
+
     </properties>
 
     <!-- Embabel BOM(s) -->
@@ -64,6 +66,7 @@
         <dependency>
             <groupId>com.embabel.agent.example</groupId>
             <artifactId>examples-common</artifactId>
+            <version>${examples-common.version}</version>
         </dependency>
 
         <dependency>
