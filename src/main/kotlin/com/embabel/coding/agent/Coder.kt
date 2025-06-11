@@ -20,10 +20,9 @@ import com.embabel.agent.api.common.ActionContext
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
 import com.embabel.agent.core.CoreToolGroups
-import com.embabel.agent.domain.library.HasContent
 import com.embabel.agent.domain.io.UserInput
+import com.embabel.agent.domain.library.HasContent
 import com.embabel.coding.domain.SoftwareProject
-import com.embabel.coding.domain.SoftwareProjectRepository
 import com.embabel.coding.tools.BuildResult
 import com.embabel.common.util.time
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
@@ -75,21 +74,17 @@ object CoderConditions {
 )
 @Profile("!test")
 class Coder(
-    private val softwareProjectRepository: SoftwareProjectRepository,
+    private val taskFocus: TaskFocus,
     private val coderProperties: CoderProperties,
 ) {
 
     private val logger = LoggerFactory.getLogger(Coder::class.java)
 
-    /**
-     * First step in the agent flow: Load the project to be modified
-     * Retrieves the project from the repository using the default location
-     */
     @Action
-    fun loadExistingProject(): SoftwareProject? =
-        // TODO need to select
-        softwareProjectRepository.findAll().firstOrNull()
-
+    fun loadExistingProject(): SoftwareProject? {
+        logger.info("Working on project {}", taskFocus.softwareProject?.root ?: "None")
+        return taskFocus.softwareProject
+    }
 
     /**
      * Converts raw user input into a structured code modification request
