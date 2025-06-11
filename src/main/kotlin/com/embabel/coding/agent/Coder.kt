@@ -41,7 +41,7 @@ data class CodeModificationReport(
     val text: String,
 ) : HasContent {
     override val content: String
-        get() = TODO("Not yet implemented")
+        get() = text
 }
 
 object CoderConditions {
@@ -195,26 +195,20 @@ class Coder(
         logger.info("✎ Modifying code according to request: ${codeModificationRequest.request}")
         val report: String = context.promptRunner(
             llm = coderProperties.primaryCodingLlm,
-            promptContributors = listOf(project),
+            promptContributors = listOf(project, coderProperties.codeModificationDirections()),
         ).create(
             """
-            Execute the following user request to modify code in the given project.
-            Use the file tools to read code and directories on the local system, not GitHub.
+            Execute the following user request to modify code in the given project.           
             Use the project information to help you understand the code.
             The project will be in git so you can safely modify content without worrying about backups.
             Return an explanation of what you did and why.
 
             DO NOT ASK FOR USER INPUT: DO WHAT YOU THINK IS NEEDED TO MODIFY THE PROJECT.
 
-            Use the web tools if you are asked to use a technology you don't know about.
-            ALWAYS LOOK FOR THE FILES IN THE PROJECT LOCALLY USING FILE TOOLS, NOT THE WEB.
-
             DO NOT BUILD THE PROJECT UNLESS THE USER HAS REQUESTED IT
             AND IT IS NECESSARY TO DECIDE WHAT TO MODIFY.
             IF BUILDING IS NEEDED, BE SURE TO RUN UNIT TESTS.
             DO NOT BUILD *AFTER* MODIFYING CODE.
-
-            Make multiple small, focused edits using the editFile tool.
 
             User request:
             "${codeModificationRequest.request}"
@@ -243,16 +237,16 @@ class Coder(
     ): CodeModificationReport {
         val report: String = context.promptRunner(
             llm = coderProperties.fixCodingLlm,
-            promptContributors = listOf(project, buildFailure),
+            promptContributors = listOf(project, buildFailure, coderProperties.codeModificationDirections()),
         ).create(
             """
             Modify code in the given project to fix the broken build.
-            Use the file tools to read code and directories.
+            
             Use the project information to help you understand the code.
             The project will be in git so you can safely modify content without worrying about backups.
             Return an explanation of what you did and why.
             Consider the build failure report.
-
+           
             DO NOT BUILD THE PROJECT. JUST MODIFY CODE.
             Consider the following user request for the necessary functionality:
             "${codeModificationRequest.request}"

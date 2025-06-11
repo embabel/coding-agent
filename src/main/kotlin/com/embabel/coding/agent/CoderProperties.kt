@@ -18,6 +18,7 @@ package com.embabel.coding.agent
 import com.embabel.agent.config.models.AnthropicModels
 import com.embabel.common.ai.model.LlmOptions
 import com.embabel.common.ai.model.ModelSelectionCriteria
+import com.embabel.common.ai.prompt.PromptContributor
 import com.embabel.common.util.loggerFor
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -27,8 +28,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties(prefix = "embabel.coding")
 data class CoderProperties(
     val primaryCodingModel: String = AnthropicModels.Companion.CLAUDE_37_SONNET,//OllamaModels.QWEN2_5_CODER,
-    val fixCodingModel: String = AnthropicModels.Companion.CLAUDE_37_SONNET,
+    val fixCodingModel: String = AnthropicModels.Companion.CLAUDE_40_OPUS,
+    private val codeModificationDirections: String = """
+        Use the file tools to read code and directories.
+        Use the web tools if you are asked to use a technology you don't know about.
+        ALWAYS LOOK FOR THE FILES IN THE PROJECT LOCALLY USING FILE TOOLS, NOT THE WEB OR GITHUB.
+        Make multiple small, focused edits using the editFile tool.
+    """.trimIndent()
 ) {
+
+    fun codeModificationDirections() = PromptContributor.fixed(
+        codeModificationDirections,
+    )
 
     init {
         loggerFor<CoderProperties>().info("Coding properties: {}", this)
