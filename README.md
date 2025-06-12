@@ -44,9 +44,21 @@ Key capabilities include:
 ## Futures
 
 - Support for build systems other than Maven
+- Better project selection. Presently, the agent is focused on Maven projects below the directory in which it is run.
 - Enhanced language support. See `SymbolSearch`
 - Further effort to reduce token usage
 - Integration with Spring repository to allow choice of project to work on
 - Deep integration with GitHub to allow presentation of changes via PR
 - Automated review of PRs
 - (possible) chat mode to allow interaction with agent during a process flow
+
+## Using this project
+
+Run with the shell. The following commands are available. Note that some commands require a lengthy string to be
+enclosed in double quotes.
+
+- `set-focus <project>`: Focus on a project, e.g. `focus embabel-agent`. The string must match the last path segment of
+  the project name, e.g. `embabel-agent-api`.
+- `focus`: Show the current focus project.
+- `x <description of code change operation>`: Make a code changeE.g.
+  `x "Add a section in README.md explaining the FooBar Kotlin class"`.
