@@ -198,7 +198,7 @@ class Coder(
             promptContributors = listOf(project, coderProperties.codeModificationDirections()),
         ).create(
             """
-            Execute the following user request to modify code in the given project.           
+            Execute the following user request to modify code in the given project.
             Use the project information to help you understand the code.
             The project will be in git so you can safely modify content without worrying about backups.
             Return an explanation of what you did and why.
@@ -241,12 +241,12 @@ class Coder(
         ).create(
             """
             Modify code in the given project to fix the broken build.
-            
+
             Use the project information to help you understand the code.
             The project will be in git so you can safely modify content without worrying about backups.
             Return an explanation of what you did and why.
             Consider the build failure report.
-           
+
             DO NOT BUILD THE PROJECT. JUST MODIFY CODE.
             Consider the following user request for the necessary functionality:
             "${codeModificationRequest.request}"
