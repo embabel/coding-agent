@@ -20,28 +20,71 @@ import com.embabel.agent.api.common.ActionContext
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
 import com.embabel.agent.core.CoreToolGroups
+import com.embabel.agent.core.count
 import com.embabel.agent.domain.io.UserInput
 import com.embabel.agent.domain.library.HasContent
 import com.embabel.coding.domain.SoftwareProject
 import com.embabel.coding.tools.BuildResult
+import com.embabel.common.core.MobyNameGenerator
+import com.embabel.common.core.types.Timed
+import com.embabel.common.core.types.Timestamped
 import com.embabel.common.util.time
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import java.time.Duration
+import java.time.Instant
+
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.DEDUCTION,
+)
+@JsonSubTypes(
+    JsonSubTypes.Type(value = CodeModificationRequest::class),
+    JsonSubTypes.Type(value = SuccessfulCodeModification::class),
+)
+sealed interface LogEntry
 
 data class CodeModificationRequest(
     @get:JsonPropertyDescription("Request to modify code")
     val request: String,
-)
+    val id: String = MobyNameGenerator.generateName(),
+) : Timestamped, LogEntry {
 
+    override val timestamp: Instant = Instant.now()
+}
 
+/**
+ * What the agent did to modify the code.
+ * Node that this might not be the final report,
+ * as the agent might need to build the project
+ * and fix any issues that arise.
+ */
 data class CodeModificationReport(
     @get:JsonPropertyDescription("Report of the modifications made to code")
     val text: String,
 ) : HasContent {
     override val content: String
         get() = text
+}
+
+/**
+ * Will be logged.
+ */
+data class SuccessfulCodeModification(
+    val request: CodeModificationRequest,
+    val report: CodeModificationReport,
+    val suggestedCommitMessage: String,
+) : Timestamped, Timed, HasContent, LogEntry {
+    override val timestamp: Instant = Instant.now()
+
+    override val runningTime: Duration
+        get() = Duration.between(request.timestamp, timestamp)
+
+    override val content: String
+        get() = "Code modification completed in ${runningTime.seconds} seconds\n${report.content}"
+
 }
 
 object CoderConditions {
@@ -76,6 +119,7 @@ object CoderConditions {
 class Coder(
     private val taskFocus: TaskFocus,
     private val coderProperties: CoderProperties,
+    private val logWriter: LogWriter,
 ) {
 
     private val logger = LoggerFactory.getLogger(Coder::class.java)
@@ -103,7 +147,6 @@ class Coder(
         Create a CodeModificationRequest from the issue.
         """.trimIndent()
     )
-
 
     /**
      * The LLM will determine the command to use to build the project.
@@ -190,9 +233,13 @@ class Coder(
     fun modifyCode(
         codeModificationRequest: CodeModificationRequest,
         project: SoftwareProject,
-        context: ActionContext,
+        context: OperationContext,
     ): CodeModificationReport {
         logger.info("✎ Modifying code according to request: ${codeModificationRequest.request}")
+        val isFirstModification = context.count<CodeModificationRequest>() == 1
+        if (isFirstModification) {
+            logWriter.logRequest(codeModificationRequest, project)
+        }
         val report: String = context.promptRunner(
             llm = coderProperties.primaryCodingLlm,
             promptContributors = listOf(project, coderProperties.codeModificationDirections()),
@@ -257,11 +304,32 @@ class Coder(
 
     /**
      * Final step in the agent flow
-     * Returns the code modification report to the user
+     * Returns the code modification completion report to the user
      * Only triggered when the build is successful (or not needed)
      */
     @Action(pre = [CoderConditions.BUILD_SUCCEEDED])
-    @AchievesGoal(description = "Modify project code as per user request")
-    fun shareCodeModificationReport(codeModificationReport: CodeModificationReport) = codeModificationReport
+    @AchievesGoal(description = "Modify project code as per code modification request")
+    fun shareCodeModificationReport(
+        codeModificationReport: CodeModificationReport,
+        softwareProject: SoftwareProject,
+        operationContext: OperationContext,
+    ): SuccessfulCodeModification {
+        val suggestedCommitMessage = operationContext.promptRunner(
+            llm = coderProperties.primaryCodingLlm,
+        ).generateText(
+            """
+            Generate a concise git commit message for the following code modification report:
+            ${codeModificationReport.text}
+            """.trimIndent(),
+        )
+        logger.info("Sharing code modification report: ${codeModificationReport.text}")
+        val success = SuccessfulCodeModification(
+            request = CodeModificationRequest(codeModificationReport.text),
+            report = codeModificationReport,
+            suggestedCommitMessage = suggestedCommitMessage,
+        )
+        logWriter.logResponse(success, softwareProject)
+        return success
+    }
 
 }

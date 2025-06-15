@@ -17,13 +17,18 @@ package com.embabel.coding.agent
 
 import com.embabel.coding.domain.SoftwareProject
 import com.embabel.coding.domain.SoftwareProjectRepository
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 /**
  * Stateful component that holds the focus of the agent.
  */
 @Component
-class TaskFocus(private val softwareProjectRepository: SoftwareProjectRepository) {
+class TaskFocus(
+    private val softwareProjectRepository: SoftwareProjectRepository,
+) {
+
+    private val logger = LoggerFactory.getLogger(TaskFocus::class.java)
 
     var softwareProject: SoftwareProject? = softwareProjectRepository.findAll().find {
         it.root.contains("embabel-agent-api")
@@ -32,7 +37,10 @@ class TaskFocus(private val softwareProjectRepository: SoftwareProjectRepository
     fun setFocus(name: String): SoftwareProject? {
         val newFocus = softwareProjectRepository.findAll().find { it.root.contains(name) }
         if (newFocus != null) {
+            logger.info("Found new focus: $name")
             softwareProject = newFocus
+        } else {
+            logger.warn("No project found with name: $name")
         }
         return newFocus
     }

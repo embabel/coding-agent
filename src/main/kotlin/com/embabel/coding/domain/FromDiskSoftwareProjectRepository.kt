@@ -42,9 +42,11 @@ class FromDiskSoftwareProjectRepository(
     private fun findProjectsUnderRoot(): List<SoftwareProject> {
         val rootFileTools = FileTools.readOnly(root.absolutePath)
         logger.info("Looking under {} for projects", rootFileTools.root)
-        val mavenProjects = rootFileTools.findFiles("**/pom.xml")
-        logger.info("Found {} Maven projects", mavenProjects.size)
-        return mavenProjects
+        val pomFiles = rootFileTools.findFiles("**/pom.xml")
+            // TODO why is this needed?
+            .filterNot { it.contains("..") }
+        logger.info("Found {} Maven projects", pomFiles.size)
+        return pomFiles
             .map { it.replace("pom.xml", "") }
             .map { root ->
                 SoftwareProject(
