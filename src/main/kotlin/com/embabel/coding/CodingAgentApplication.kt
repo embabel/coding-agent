@@ -15,34 +15,16 @@
  */
 package com.embabel.coding
 
-import com.embabel.common.util.WinUtils
+import com.embabel.agent.config.annotation.EnableAgents
+import com.embabel.agent.config.annotation.LoggingThemes
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
-@SpringBootApplication(
-    scanBasePackages = [
-        "com.embabel.agent",
-        "com.embabel.coding",
-    ]
-)
-@ConfigurationPropertiesScan(
-    basePackages  = [
-        "com.embabel.agent",
-        "com.embabel.coding",
-])
-class CodingAgentApplication {
-
-    companion object {
-        init {
-            if (WinUtils.IS_OS_WINDOWS()) {
-                // Set console to UTF-8 on Windows
-                // This is necessary to display non-ASCII characters correctly
-                WinUtils.CHCP_TO_UTF8()
-            }
-        }
-    }
-}
+@SpringBootApplication
+@ConfigurationPropertiesScan
+@EnableAgents(loggingTheme = LoggingThemes.SEVERANCE)
+class CodingAgentApplication
 
 fun main(args: Array<String>) {
     runApplication<CodingAgentApplication>(*args)

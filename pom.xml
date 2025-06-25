@@ -13,77 +13,26 @@
     <packaging>jar</packaging>
     <name>Embabel Coding Agent</name>
     <description>Embabel Agentic Flow for Software Engineers</description>
-    
+
     <properties>
-        <embabel-common.version>0.1.0-SNAPSHOT</embabel-common.version>
         <embabel-agent-api.version>0.1.0-SNAPSHOT</embabel-agent-api.version>
-        <examples-common.version>0.1.0-SNAPSHOT</examples-common.version>
     </properties>
 
-    <!-- Embabel BOM(s) -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- Embabel Agent BOM -->
-            <dependency>
-                <groupId>com.embabel.agent</groupId>
-                <artifactId>embabel-agent-dependencies</artifactId>
-                <version>${embabel-agent-api.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- Embabel Common BOM -->
-            <dependency>
-                <groupId>com.embabel.common</groupId>
-                <artifactId>embabel-common-dependencies</artifactId>
-                <version>${embabel-common.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- Embabel Common BOM For Unit Tests-->
-            <dependency>
-                <groupId>com.embabel.common</groupId>
-                <artifactId>embabel-common-test-dependencies</artifactId>
-                <version>${embabel-common.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
 
         <dependency>
             <groupId>com.embabel.agent</groupId>
-            <artifactId>embabel-agent-api</artifactId>
+            <artifactId>embabel-agent-starter</artifactId>
+            <version>${embabel-agent-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-test</artifactId>
+            <version>${embabel-agent-api.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.embabel.agent.example</groupId>
-            <artifactId>examples-common</artifactId>
-            <version>${examples-common.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.embabel.common</groupId>
-            <artifactId>embabel-common-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.embabel.common</groupId>
-            <artifactId>embabel-common-util</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.embabel.common</groupId>
-            <artifactId>embabel-common-ai</artifactId>
-        </dependency>
-
-        <!-- Unit and Integration Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -123,13 +72,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-            
+
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>    
+    </build>
 
     <repositories>
         <repository>

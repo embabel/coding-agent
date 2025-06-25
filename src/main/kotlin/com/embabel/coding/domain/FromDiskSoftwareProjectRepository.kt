@@ -15,8 +15,8 @@
  */
 package com.embabel.coding.domain
 
+import com.embabel.agent.domain.InMemoryCrudRepository
 import com.embabel.agent.tools.file.FileTools
-import com.embabel.example.common.InMemoryCrudRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.io.File
