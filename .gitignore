@@ -9,3 +9,5 @@ embabel-agent-api/src/main/resources/mcp/**
 .idea/workspace.xml
 
 **/*.log
+
+mcp.env
