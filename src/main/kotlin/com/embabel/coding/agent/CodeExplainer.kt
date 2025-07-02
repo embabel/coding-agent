@@ -20,12 +20,10 @@ import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.Agent
 import com.embabel.agent.api.annotation.using
 import com.embabel.agent.api.common.create
-import com.embabel.agent.core.CoreToolGroups
-import com.embabel.agent.core.ToolGroup
+import com.embabel.agent.domain.io.UserInput
 import com.embabel.agent.domain.library.HasContent
 import com.embabel.agent.domain.library.InternetResource
 import com.embabel.agent.domain.library.InternetResources
-import com.embabel.agent.domain.io.UserInput
 import com.embabel.coding.domain.SoftwareProject
 import org.springframework.context.annotation.Profile
 
@@ -34,13 +32,16 @@ data class CodeExplanation(
     override val links: List<InternetResource>,
 ) : HasContent, InternetResources {
     override val content: String
-        get() = TODO("Not yet implemented")
+        get() = """
+            $text
+            
+            ${links.joinToString("\n")}
+        """.trimIndent()
 }
 
 
 @Agent(
     description = "Explain code in a software project or directory structure",
-    scan = false,
 )
 @Profile("!test")
 class CodeExplainer(

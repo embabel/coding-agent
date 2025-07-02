@@ -62,3 +62,6 @@ enclosed in double quotes.
 - `focus`: Show the current focus project.
 - `x <description of code change operation>`: Make a code changeE.g.
   `x "Add a section in README.md explaining the FooBar Kotlin class"`.
+- `chat`: Enter chat mode, where you can ask the agent to perform tasks such as explaining code or modifying it.
+
+> Chat presently has no memory, so it will not remember the context of previous messages.
