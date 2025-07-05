@@ -46,6 +46,7 @@ Key capabilities include:
 - Support for build systems other than Maven
 - Better project selection. Presently, the agent is focused on Maven projects below the directory in which it is run.
 - Enhanced language support. See `SymbolSearch`
+- Understanding libraries in use via accessing source code, via maven repositories
 - Further effort to reduce token usage
 - Integration with Spring repository to allow choice of project to work on
 - Deep integration with GitHub to allow presentation of changes via PR

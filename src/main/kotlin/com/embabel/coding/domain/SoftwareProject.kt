@@ -15,7 +15,6 @@
  */
 package com.embabel.coding.domain
 
-import com.embabel.agent.tools.file.FileContentTransformer
 import com.embabel.agent.tools.file.FileTools
 import com.embabel.agent.tools.file.WellKnownFileContentTransformers
 import com.embabel.coding.tools.BuildOptions
@@ -23,16 +22,13 @@ import com.embabel.coding.tools.BuildResult
 import com.embabel.coding.tools.Ci
 import com.embabel.coding.tools.SymbolSearch
 import com.embabel.common.ai.prompt.PromptContributor
+import com.embabel.common.util.StringTransformer
 import com.embabel.common.util.loggerFor
 import com.fasterxml.jackson.annotation.JsonClassDescription
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.ai.tool.annotation.ToolParam
 import org.springframework.data.repository.CrudRepository
-import java.io.File
-import java.nio.file.Files
-import kotlin.collections.isNotEmpty
-import kotlin.collections.joinToString
 
 /**
  * Open to allow extension
@@ -55,7 +51,11 @@ open class SoftwareProject(
         if (!exists()) {
             error("Directory does not exist")
         }
-        loggerFor<SoftwareProject>().info("Software project tools: ${toolCallbacks.map { it.toolDefinition.name()}.sorted()}")
+        loggerFor<SoftwareProject>().info(
+            "Software project tools: ${
+                toolCallbacks.map { it.toolDefinition.name() }.sorted()
+            }"
+        )
     }
 
     val codingStyle: String
@@ -68,7 +68,7 @@ open class SoftwareProject(
                 ?: defaultCodingStyle
         }
 
-    override val fileContentTransformers: List<FileContentTransformer>
+    override val fileContentTransformers: List<StringTransformer>
         get() = listOf(WellKnownFileContentTransformers.removeApacheLicenseHeader)
 
     val ci = Ci(root)
