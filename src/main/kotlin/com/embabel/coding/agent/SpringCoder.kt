@@ -40,7 +40,7 @@ data class SpringRecipe(
 )
 
 object SpringCoderConditions {
-    const val SpringProjectCreated = "springProjectCreated"
+    const val SPRING_PROJECT_CREATED = "springProjectCreated"
 }
 
 @AgentCapabilities(
@@ -56,7 +56,7 @@ class SpringCoder {
         fromForm("Spring recipe")
 
     @Action(
-        post = [SpringCoderConditions.SpringProjectCreated]
+        post = [SpringCoderConditions.SPRING_PROJECT_CREATED]
     )
     fun createSpringInitialzrProject(
         springRecipe: SpringRecipe,
@@ -103,7 +103,7 @@ class SpringCoder {
         logger.info("Extracted Spring Initialzr project to {}", projectDir.absolutePath)
 
         // Return the project coordinates
-        context.setCondition(SpringCoderConditions.SpringProjectCreated, true)
+        context.setCondition(SpringCoderConditions.SPRING_PROJECT_CREATED, true)
         context += springRecipe
         return SoftwareProject(
             root = projectDir.absolutePath,
@@ -114,7 +114,7 @@ class SpringCoder {
     }
 
     @Action(
-        pre = [SpringCoderConditions.SpringProjectCreated,
+        pre = [SpringCoderConditions.SPRING_PROJECT_CREATED,
             CoderConditions.BUILD_SUCCEEDED],
     )
     @AchievesGoal("Create a new Spring project")

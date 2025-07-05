@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service
 import java.io.File
 
 /**
- * Look under disk
+ * Look under directory
  */
 @Service
 class FromDiskSoftwareProjectRepository(

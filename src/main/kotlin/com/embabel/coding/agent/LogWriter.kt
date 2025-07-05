@@ -17,6 +17,9 @@ package com.embabel.coding.agent
 
 import com.embabel.coding.domain.SoftwareProject
 
+/**
+ * Log the changes we've made to the codebase.
+ */
 interface LogWriter {
 
     /**
