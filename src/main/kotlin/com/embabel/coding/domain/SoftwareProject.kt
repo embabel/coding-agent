@@ -45,6 +45,7 @@ open class SoftwareProject(
         """.trimIndent(),
     @get:JsonPropertyDescription("Build command, such as 'mvn clean test'")
     val buildCommand: String,
+    val wasCreated: Boolean = false,
 ) : PromptContributor, FileTools, SymbolSearch {
 
     init {

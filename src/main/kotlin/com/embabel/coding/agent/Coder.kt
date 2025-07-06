@@ -193,8 +193,11 @@ class Coder(
      * Triggered when the last action was a code modification
      */
     @Condition(name = CoderConditions.BUILD_NEEDED)
-    fun buildNeeded(context: OperationContext): Boolean =
-        context.lastResult() is CodeModificationReport
+    fun buildNeeded(context: OperationContext): Boolean {
+        val last = context.lastResult()
+        return last is CodeModificationReport || (
+                last is SoftwareProject && last.wasCreated)
+    }
 
     /**
      * Condition that checks if the last action was a build

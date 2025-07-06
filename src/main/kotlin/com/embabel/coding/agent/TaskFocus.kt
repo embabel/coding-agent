@@ -44,4 +44,10 @@ class TaskFocus(
         }
         return newFocus
     }
+
+    fun saveAndSwitch(newAgentProject: SoftwareProject) {
+        logger.info("Switching focus to new project: ${newAgentProject.root}")
+        softwareProjectRepository.save(newAgentProject)
+        softwareProject = newAgentProject
+    }
 }
