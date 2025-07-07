@@ -21,6 +21,7 @@ import com.embabel.agent.api.annotation.AgentCapabilities
 import com.embabel.agent.api.annotation.fromForm
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.coding.domain.SoftwareProject
+import com.embabel.coding.domain.TaskFocus
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import java.io.File
@@ -42,9 +43,9 @@ data class AgentRequirements(
 )
 @Profile("!test")
 class AgentProjectCreator(
-    val root: File = File(System.getProperty("user.dir")).parentFile,
-//    val workingDirName: String = "embabel-coder",
+    private val coderProperties: CoderProperties,
     private val taskFocus: TaskFocus,
+    properties: CoderProperties,
 ) {
 
     private val logger = LoggerFactory.getLogger(AgentProjectCreator::class.java)
@@ -60,17 +61,11 @@ class AgentProjectCreator(
     ): SoftwareProject {
         logger.info("Creating Agent project named {}", requirements.projectName)
 
-        val workDir = root//File(root, workingDirName)
-
-        // TODO is this safe
-//        val projectDir = File(root, requirements.projectName)
-//        projectDir.mkdirs()
-
+        val workDir = coderProperties.root
         val newAgentProject = createProject(workDir, requirements)
         taskFocus.saveAndSwitch(newAgentProject)
         return newAgentProject
     }
-
 
     @Action(
         pre = [

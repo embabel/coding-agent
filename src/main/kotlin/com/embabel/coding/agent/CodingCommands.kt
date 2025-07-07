@@ -15,6 +15,7 @@
  */
 package com.embabel.coding.agent
 
+import com.embabel.coding.domain.TaskFocus
 import org.springframework.shell.standard.ShellComponent
 import org.springframework.shell.standard.ShellMethod
 import org.springframework.shell.standard.ShellOption

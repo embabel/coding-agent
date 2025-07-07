@@ -15,7 +15,9 @@
  */
 package com.embabel.coding.agent
 
+import com.embabel.coding.domain.CodeModificationRequest
 import com.embabel.coding.domain.SoftwareProject
+import com.embabel.coding.domain.SuccessfulCodeModification
 
 /**
  * Log the changes we've made to the codebase.

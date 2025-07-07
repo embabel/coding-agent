@@ -17,16 +17,16 @@ package com.embabel.coding.domain
 
 import com.embabel.agent.domain.InMemoryCrudRepository
 import com.embabel.agent.tools.file.FileTools
+import com.embabel.coding.agent.CoderProperties
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.io.File
 
 /**
- * Look under directory
+ * Look for parallel directories
  */
 @Service
 class FromDiskSoftwareProjectRepository(
-    val root: File = File(System.getProperty("user.dir")).parentFile,
+    private val properties: CoderProperties,
 ) : SoftwareProjectRepository,
     InMemoryCrudRepository<SoftwareProject>(
         idGetter = { it.root },
@@ -37,14 +37,18 @@ class FromDiskSoftwareProjectRepository(
 
     init {
         this.saveAll(findProjectsUnderRoot())
+        logger.info("Loaded {} projects from disk", this.count())
+        logger.info(
+            "Projects:\n\t{}", this.findAll().sortedBy { it.root }.joinToString("\n\t") { it.root })
     }
 
     private fun findProjectsUnderRoot(): List<SoftwareProject> {
-        val rootFileTools = FileTools.readOnly(root.absolutePath)
+        val rootFileTools = FileTools.readOnly(properties.root.absolutePath)
         logger.info("Looking under {} for projects", rootFileTools.root)
-        val pomFiles = rootFileTools.findFiles("**/pom.xml")
-            // TODO why is this needed?
-            .filterNot { it.contains("..") }
+        val pomFiles = rootFileTools.findFiles(
+            glob = "**/pom.xml",
+            findHighest = !properties.findNestedProjects
+        )
         logger.info("Found {} Maven projects", pomFiles.size)
         return pomFiles
             .map { it.replace("pom.xml", "") }

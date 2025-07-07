@@ -1,9 +1,9 @@
 package com.embabel.coding.agent.support
 
-import com.embabel.coding.agent.CodeModificationRequest
 import com.embabel.coding.agent.LogWriter
-import com.embabel.coding.agent.SuccessfulCodeModification
+import com.embabel.coding.domain.CodeModificationRequest
 import com.embabel.coding.domain.SoftwareProject
+import com.embabel.coding.domain.SuccessfulCodeModification
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Service
 

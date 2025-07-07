@@ -1,4 +1,4 @@
-package com.embabel.coding.agent
+package com.embabel.coding.domain
 
 import com.embabel.agent.domain.library.HasContent
 import com.embabel.common.core.MobyNameGenerator
@@ -57,7 +57,7 @@ data class CodeModificationReport(
     val text: String,
     val filesChanged: List<String>
 ) : HasContent {
-    
+
     override val content: String
         get() = text
 }
