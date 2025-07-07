@@ -55,7 +55,9 @@ data class CodeModificationRequest(
 data class CodeModificationReport(
     @get:JsonPropertyDescription("Report of the modifications made to code")
     val text: String,
+    val filesChanged: List<String>
 ) : HasContent {
+    
     override val content: String
         get() = text
 }

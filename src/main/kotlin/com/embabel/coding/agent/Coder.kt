@@ -181,6 +181,7 @@ class Coder(
         if (isFirstModification) {
             logWriter.logRequest(codeModificationRequest, project)
         }
+        // SoftwareProject is automatically added to context
         val report: String = context.promptRunner(
             llm = coderProperties.primaryCodingLlm,
             promptContributors = listOf(project, coderProperties.codeModificationDirections()),
@@ -203,7 +204,7 @@ class Coder(
             }
             """.trimIndent(),
         )
-        return CodeModificationReport(report)
+        return CodeModificationReport(text = report, filesChanged = emptyList())
     }
 
     /**
@@ -223,6 +224,7 @@ class Coder(
         buildFailure: BuildResult,
         context: ActionContext,
     ): CodeModificationReport {
+        project.flushChanges()
         val report: String = context.promptRunner(
             llm = coderProperties.fixCodingLlm,
             promptContributors = listOf(project, buildFailure, coderProperties.codeModificationDirections()),
@@ -240,7 +242,10 @@ class Coder(
             "${codeModificationRequest.request}"
             """.trimIndent(),
         )
-        return CodeModificationReport(report)
+        return CodeModificationReport(
+            text = report,
+            filesChanged = project.getChanges().map { it.path }.toList()
+        )
     }
 
     /**
