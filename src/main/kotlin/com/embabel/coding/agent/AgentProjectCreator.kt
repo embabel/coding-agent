@@ -58,7 +58,7 @@ class AgentProjectCreator(
         requirements: AgentRequirements,
         context: OperationContext,
     ): SoftwareProject {
-        logger.info("Creating Agent project Initialzr project")
+        logger.info("Creating Agent project named {}", requirements.projectName)
 
         val workDir = root//File(root, workingDirName)
 

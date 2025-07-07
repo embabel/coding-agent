@@ -22,71 +22,17 @@ import com.embabel.agent.api.common.create
 import com.embabel.agent.core.CoreToolGroups
 import com.embabel.agent.core.count
 import com.embabel.agent.domain.io.UserInput
-import com.embabel.agent.domain.library.HasContent
 import com.embabel.coding.domain.SoftwareProject
 import com.embabel.coding.tools.BuildResult
-import com.embabel.common.core.MobyNameGenerator
-import com.embabel.common.core.types.Timed
-import com.embabel.common.core.types.Timestamped
 import com.embabel.common.util.time
-import com.fasterxml.jackson.annotation.JsonPropertyDescription
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import java.time.Duration
-import java.time.Instant
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.DEDUCTION,
-)
-@JsonSubTypes(
-    JsonSubTypes.Type(value = CodeModificationRequest::class),
-    JsonSubTypes.Type(value = SuccessfulCodeModification::class),
-)
-sealed interface LogEntry
-
-data class CodeModificationRequest(
-    @get:JsonPropertyDescription("Request to modify code")
-    val request: String,
-    val id: String = MobyNameGenerator.generateName(),
-) : Timestamped, LogEntry {
-
-    override val timestamp: Instant = Instant.now()
-}
 
 /**
- * What the agent did to modify the code.
- * Node that this might not be the final report,
- * as the agent might need to build the project
- * and fix any issues that arise.
+ * Don't be stringly typed.
  */
-data class CodeModificationReport(
-    @get:JsonPropertyDescription("Report of the modifications made to code")
-    val text: String,
-) : HasContent {
-    override val content: String
-        get() = text
-}
-
-/**
- * Will be logged.
- */
-data class SuccessfulCodeModification(
-    val request: CodeModificationRequest,
-    val report: CodeModificationReport,
-    val suggestedCommitMessage: String,
-) : Timestamped, Timed, HasContent, LogEntry {
-    override val timestamp: Instant = Instant.now()
-
-    override val runningTime: Duration
-        get() = Duration.between(request.timestamp, timestamp)
-
-    override val content: String
-        get() = "Code modification completed in ${runningTime.seconds} seconds\n${report.content}"
-
-}
-
 object CoderConditions {
     const val BUILD_NEEDED = "buildNeeded"
     const val BUILD_FAILED = "buildFailed"
@@ -98,14 +44,6 @@ object CoderConditions {
  * Embabel coding agent.
  *
  * The Coder agent is responsible for modifying code in a software project based on user requests.
- * The agent flow is as follows:
- *
- * 1. loadExistingProject: Loads the project from the repository
- * 2. codeModificationRequestFromUserInput: Converts user input into a structured code modification request
- * 3. modifyCode: Makes the requested changes to the codebase
- * 4. build/buildWithCommand: Builds the project if needed (triggered by the BuildNeeded condition)
- * 5. fixBrokenBuild: If the build fails, attempts to fix the issues
- * 6. shareCodeModificationReport: Returns the final report of changes made
  *
  * The agent uses conditions to control the flow:
  * - BuildNeeded: Triggered after code modification to determine if a build is required

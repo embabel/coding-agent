@@ -36,15 +36,18 @@ coding agents.
 
 Key capabilities include:
 
-- Provide the ability to explain and improve code
-- Combine access to project code with internet access: for example, to research new APIs.
+- Explaining code
+- Creating new projects using Embabel
+- Making code changes across multiple files
+- Writing documentation
+- Combining access to project code with internet access: for example, to research new APIs.
 
 > This project is in an early stage of development.
 
 ## Futures
 
 - Support for build systems other than Maven
-- Better project selection. Presently, the agent is focused on Maven projects below the directory in which it is run.
+- Better project selection.
 - Enhanced language support. See `SymbolSearch`
 - Understanding libraries in use via accessing source code, via maven repositories
 - Further effort to reduce token usage
@@ -55,14 +58,14 @@ Key capabilities include:
 
 ## Using this project
 
+Coder will find Maven projects under peer directories of the directory in which it is started.
+
 Run with the shell. The following commands are available. Note that some commands require a lengthy string to be
 enclosed in double quotes.
 
 - `set-focus <project>`: Focus on a project, e.g. `focus embabel-agent`. The string must match the last path segment of
   the project name, e.g. `embabel-agent-api`.
 - `focus`: Show the current focus project.
-- `x <description of code change operation>`: Make a code changeE.g.
-  `x "Add a section in README.md explaining the FooBar Kotlin class"`.
 - `chat`: Enter chat mode, where you can ask the agent to perform tasks such as explaining code or modifying it.
 
 > Chat presently has no memory, so it will not remember the context of previous messages.
