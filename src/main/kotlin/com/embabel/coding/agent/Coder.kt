@@ -16,12 +16,12 @@
 package com.embabel.coding.agent
 
 import com.embabel.agent.api.annotation.*
-import com.embabel.agent.api.common.ActionContext
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
 import com.embabel.agent.core.CoreToolGroups
 import com.embabel.agent.core.count
 import com.embabel.agent.domain.io.UserInput
+import com.embabel.chat.Conversation
 import com.embabel.coding.domain.*
 import com.embabel.coding.tools.BuildResult
 import com.embabel.common.util.time
@@ -75,16 +75,19 @@ class Coder(
     @Action(toolGroups = [CoreToolGroups.GITHUB])
     fun codeModificationRequestFromUserInput(
         project: SoftwareProject,
-        userInput: UserInput
-    ): CodeModificationRequest = using(llm = coderProperties.primaryCodingLlm).create(
-        """
+        userInput: UserInput,
+        conversation: Conversation? = null,
+    ): CodeModificationRequest = using(llm = coderProperties.primaryCodingLlm)
+        .withPromptContributors(listOfNotNull(conversation?.promptContributor()))
+        .create(
+            """
         Create a CodeModification request based on this user input: ${userInput.content}
         If the user wants you to pick up an issue from GitHub, search for it at ${project.url}.
         Search for the milestone the user suggests.
         Use the GitHub tools.
         Create a CodeModificationRequest from the issue.
         """.trimIndent()
-    )
+        )
 
     /**
      * The LLM will determine the command to use to build the project.
@@ -101,7 +104,7 @@ class Coder(
     )
     fun buildWithCommand(
         project: SoftwareProject,
-        context: ActionContext,
+        context: OperationContext,
     ): BuildResult {
         val (rawOutput, ms) = time {
             context.promptRunner(
@@ -171,20 +174,26 @@ class Coder(
             CoreToolGroups.WEB
         ]
     )
-    fun modifyCode(
+    fun modifyProject(
         codeModificationRequest: CodeModificationRequest,
         project: SoftwareProject,
         context: OperationContext,
+        conversation: Conversation?,
     ): CodeModificationReport {
         logger.info("✎ Modifying code according to request: ${codeModificationRequest.request}")
         val isFirstModification = context.count<CodeModificationRequest>() == 1
         if (isFirstModification) {
             logWriter.logRequest(codeModificationRequest, project)
         }
-        // SoftwareProject is automatically added to context
+        project.flushChanges()
+        // SoftwareProject tools are automatically added because it's a parameter to this function
         val report: String = context.promptRunner(
             llm = coderProperties.primaryCodingLlm,
-            promptContributors = listOf(project, coderProperties.codeModificationDirections()),
+            promptContributors = listOfNotNull(
+                project,
+                coderProperties.codeModificationDirections(),
+                conversation?.promptContributor(),
+            ),
         ).create(
             """
             Execute the following user request to modify code in the given project.
@@ -204,7 +213,10 @@ class Coder(
             }
             """.trimIndent(),
         )
-        return CodeModificationReport(text = report, filesChanged = emptyList())
+        return CodeModificationReport(
+            text = report,
+            filesChanged = project.getChanges().map { it.path }.toList()
+        )
     }
 
     /**
@@ -222,12 +234,18 @@ class Coder(
         codeModificationRequest: CodeModificationRequest,
         project: SoftwareProject,
         buildFailure: BuildResult,
-        context: ActionContext,
+        conversation: Conversation?,
+        context: OperationContext,
     ): CodeModificationReport {
         project.flushChanges()
         val report: String = context.promptRunner(
             llm = coderProperties.fixCodingLlm,
-            promptContributors = listOf(project, buildFailure, coderProperties.codeModificationDirections()),
+            promptContributors = listOfNotNull(
+                project,
+                buildFailure,
+                coderProperties.codeModificationDirections(),
+                conversation?.promptContributor(),
+            ),
         ).create(
             """
             Modify code in the given project to fix the broken build.
