@@ -272,7 +272,9 @@ class Coder(
      * Only triggered when the build is successful (or not needed)
      */
     @Action(pre = [CoderConditions.BUILD_SUCCEEDED])
-    @AchievesGoal(description = "Modify project code as per code modification request")
+    @AchievesGoal(
+        description = "Modify project code as per code modification request",
+    )
     fun shareCodeModificationReport(
         codeModificationReport: CodeModificationReport,
         softwareProject: SoftwareProject,

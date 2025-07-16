@@ -71,7 +71,7 @@ class AgentProjectCreator(
         pre = [
             CoderConditions.BUILD_SUCCEEDED],
     )
-    @AchievesGoal("Create a new Embabel agent project")
+    @AchievesGoal(description = "Create a new Embabel agent project")
     fun describeShinyNewAgentProject(
         softwareProject: SoftwareProject,
         agentRequirements: AgentRequirements,

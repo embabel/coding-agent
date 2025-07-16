@@ -20,10 +20,14 @@ import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.AgentCapabilities
 import com.embabel.agent.api.annotation.fromForm
 import com.embabel.agent.api.common.ActionContext
+import com.embabel.agent.mcpserver.McpResourcePublisher
+import com.embabel.agent.mcpserver.SyncResourceSpecificationFactory
 import com.embabel.agent.tools.file.FileWriteTools
 import com.embabel.coding.domain.SoftwareProject
+import io.modelcontextprotocol.server.McpServerFeatures
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import java.io.File
 
@@ -117,7 +121,7 @@ class SpringCoder {
         pre = [SpringCoderConditions.SPRING_PROJECT_CREATED,
             CoderConditions.BUILD_SUCCEEDED],
     )
-    @AchievesGoal("Create a new Spring project")
+    @AchievesGoal(description = "Create a new Spring project")
     fun describeShinyNewSpringProject(
         softwareProject: SoftwareProject,
         springRecipe: SpringRecipe,
@@ -131,4 +135,23 @@ class SpringCoder {
             links = emptyList(),
         )
 
+}
+
+@Component
+class ResourceFactory : McpResourcePublisher {
+
+    override fun resources(): List<McpServerFeatures.SyncResourceSpecification> {
+        return listOf(
+            SyncResourceSpecificationFactory.staticSyncResourceSpecification(
+                "spring-coder",
+                "Spring Coder",
+                "A prompt that explains how this coding agent works",
+                "A tool for creating and managing Spring projects",
+            )
+        )
+    }
+
+    override fun infoString(verbose: Boolean?): String {
+        return toString()
+    }
 }
