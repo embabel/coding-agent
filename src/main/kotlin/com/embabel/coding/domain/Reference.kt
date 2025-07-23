@@ -56,3 +56,14 @@ class FilesReference(
             """".trimIndent()
     }
 }
+
+class WebResourceReference(
+    override val name: String,
+    override val description: String,
+    val url: String,
+) : Reference {
+
+    override fun contribution(): String =
+        "Use the fetch tool to read the content of $url"
+
+}

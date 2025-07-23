@@ -72,7 +72,9 @@ class Coder(
      * Converts raw user input into a structured code modification request
      * Uses GitHub tools to search for issues if the user references them
      */
-    @Action(toolGroups = [CoreToolGroups.GITHUB])
+    @Action(
+//        toolGroups = [CoreToolGroups.GITHUB]
+    )
     fun codeModificationRequestFromUserInput(
         project: SoftwareProject,
         userInput: UserInput,
@@ -81,12 +83,8 @@ class Coder(
         .withPromptContributors(listOfNotNull(conversation?.promptContributor()))
         .create(
             """
-        Create a CodeModification request based on this user input: ${userInput.content}
-        If the user wants you to pick up an issue from GitHub, search for it at ${project.url}.
-        Search for the milestone the user suggests.
-        Use the GitHub tools.
-        Create a CodeModificationRequest from the issue.
-        """.trimIndent()
+            Create a CodeModification request based on this user input: ${userInput.content}
+            """.trimIndent()
         )
 
     /**

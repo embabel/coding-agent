@@ -33,8 +33,8 @@ import java.io.File
  */
 @ConfigurationProperties(prefix = "embabel.coder")
 data class CoderProperties(
-    val primaryCodingModel: String = AnthropicModels.Companion.CLAUDE_37_SONNET,
-    val fixCodingModel: String = AnthropicModels.Companion.CLAUDE_40_OPUS,
+    val primaryCodingModel: String = AnthropicModels.CLAUDE_37_SONNET,
+    val fixCodingModel: String = AnthropicModels.CLAUDE_40_OPUS,
     val projectRoot: String? = null,
     val findNestedProjects: Boolean = false,
     val defaultProject: String? = null,
