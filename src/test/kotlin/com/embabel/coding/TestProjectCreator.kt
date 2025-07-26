@@ -76,7 +76,7 @@ class TestProjectCreator {
             CoderConditions.BUILD_SUCCEEDED
         ]
     )
-    @AchievesGoal("Create a new test project")
+    @AchievesGoal(description = "Create a new test project")
     fun describeShinyNewProject(softwareProject: SoftwareProject): CodeExplanation =
         CodeExplanation(
             text = """
