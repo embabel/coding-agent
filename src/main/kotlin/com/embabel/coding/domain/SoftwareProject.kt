@@ -16,7 +16,9 @@
 package com.embabel.coding.domain
 
 import com.embabel.agent.tools.file.DefaultFileChangeLog
+import com.embabel.agent.tools.file.DefaultFileReadLog
 import com.embabel.agent.tools.file.FileChangeLog
+import com.embabel.agent.tools.file.FileReadLog
 import com.embabel.agent.tools.file.FileTools
 import com.embabel.agent.tools.file.WellKnownFileContentTransformers
 import com.embabel.coding.tools.BuildOptions
@@ -48,7 +50,7 @@ open class SoftwareProject(
     @get:JsonPropertyDescription("Build command, such as 'mvn clean test'")
     val buildCommand: String,
     val wasCreated: Boolean = false,
-) : PromptContributor, FileTools, SymbolSearch, FileChangeLog by DefaultFileChangeLog() {
+) : PromptContributor, FileTools, SymbolSearch, FileChangeLog by DefaultFileChangeLog(), FileReadLog by DefaultFileReadLog() {
 
     init {
         if (!exists()) {
