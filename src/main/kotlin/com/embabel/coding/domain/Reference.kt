@@ -1,5 +1,7 @@
 package com.embabel.coding.domain
 
+import com.embabel.agent.tools.file.DefaultFileReadLog
+import com.embabel.agent.tools.file.FileReadLog
 import com.embabel.agent.tools.file.FileReadTools
 import com.embabel.agent.tools.file.WellKnownFileContentTransformers
 import com.embabel.common.ai.prompt.PromptContributor
@@ -20,7 +22,7 @@ class ProjectReference(
     override val name: String,
     override val description: String,
     override val root: String,
-) : Reference, FileReadTools {
+) : Reference, FileReadTools, FileReadLog by DefaultFileReadLog() {
 
     override val fileContentTransformers: List<StringTransformer>
         get() = listOf(WellKnownFileContentTransformers.removeApacheLicenseHeader)
@@ -42,7 +44,7 @@ class FilesReference(
     override val name: String,
     override val description: String,
     override val root: String,
-) : Reference, FileReadTools {
+) : Reference, FileReadTools , FileReadLog by DefaultFileReadLog(){
 
     override val fileContentTransformers: List<StringTransformer>
         get() = listOf(WellKnownFileContentTransformers.removeApacheLicenseHeader)
