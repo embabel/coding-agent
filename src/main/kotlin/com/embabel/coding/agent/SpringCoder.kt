@@ -151,7 +151,7 @@ class ResourceFactory : McpResourcePublisher {
         )
     }
 
-    override fun infoString(verbose: Boolean?): String {
+    override fun infoString(verbose: Boolean?, indent: Int): String {
         return toString()
     }
 }
