@@ -18,7 +18,7 @@ package com.embabel.coding.agent
 import com.embabel.agent.api.annotation.AchievesGoal
 import com.embabel.agent.api.annotation.Action
 import com.embabel.agent.api.annotation.Agent
-import com.embabel.agent.api.annotation.using
+import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
 import com.embabel.agent.domain.io.UserInput
 import com.embabel.agent.domain.library.HasContent
@@ -53,11 +53,12 @@ class CodeExplainer(
     fun explainCode(
         userInput: UserInput,
         project: SoftwareProject,
-    ): CodeExplanation = using(
-        llm = coderProperties.primaryCodingLlm,
-        promptContributors = listOf(project)
-    ).create(
-        """
+        context: OperationContext,
+    ): CodeExplanation = context.ai()
+        .withLlm(coderProperties.primaryCodingLlm)
+        .withPromptElements(project)
+        .create(
+            """
                 Execute the following user request to explain something about the given project.
                 Use the file tools to read code and directories.
                 Use the project information to help you understand the code.
@@ -69,6 +70,6 @@ class CodeExplainer(
                 "${userInput.content}"
             }
             """.trimIndent(),
-    )
+        )
 
 }

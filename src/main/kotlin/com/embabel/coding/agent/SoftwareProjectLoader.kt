@@ -1,7 +1,7 @@
 package com.embabel.coding.agent
 
 import com.embabel.agent.api.annotation.Action
-import com.embabel.agent.api.annotation.using
+import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
 import com.embabel.coding.domain.SoftwareProject
 import com.embabel.coding.domain.SoftwareProjectRepository
@@ -34,15 +34,16 @@ class SoftwareProjectLoader(
      * This is expensive so we set cost high
      */
     @Action(cost = 10000.0)
-    fun analyzeProject(): SoftwareProject =
-        using(coderProperties.primaryCodingLlm).create<SoftwareProject>(
-            """
+    fun analyzeProject(context: OperationContext): SoftwareProject =
+        context.ai().withLlm(coderProperties.primaryCodingLlm)
+            .create<SoftwareProject>(
+                """
                 Analyze the project at ${TODO()}
                 Use the file tools to read code and directories before analyzing it
             """.trimIndent(),
-        ).also { project ->
-            // So we don't need to do this again
-            softwareProjectRepository.save(project)
-        }
+            ).also { project ->
+                // So we don't need to do this again
+                softwareProjectRepository.save(project)
+            }
 
 }

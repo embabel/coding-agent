@@ -15,7 +15,10 @@
  */
 package com.embabel.coding.agent
 
-import com.embabel.agent.api.annotation.*
+import com.embabel.agent.api.annotation.AchievesGoal
+import com.embabel.agent.api.annotation.Action
+import com.embabel.agent.api.annotation.Agent
+import com.embabel.agent.api.annotation.Condition
 import com.embabel.agent.api.common.OperationContext
 import com.embabel.agent.api.common.create
 import com.embabel.agent.core.CoreToolGroups
@@ -79,7 +82,9 @@ class Coder(
         project: SoftwareProject,
         userInput: UserInput,
         conversation: Conversation? = null,
-    ): CodeModificationRequest = using(llm = coderProperties.primaryCodingLlm)
+        context: OperationContext,
+    ): CodeModificationRequest = context.ai()
+        .withLlm(coderProperties.primaryCodingLlm)
         .withPromptContributors(listOfNotNull(conversation?.promptContributor()))
         .create(
             """
